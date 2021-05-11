@@ -85,7 +85,7 @@ const Weather = ({ location }) => {
       </div>
 
       <div className="daily-container">
-        <ul>
+        <ul className="daily-ul">
           {dailyWeather?.length &&
             dailyWeather.map((weather, index) => {
               return (

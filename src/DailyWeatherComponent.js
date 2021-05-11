@@ -12,7 +12,7 @@ const DailyWeatherComponent = ({ dt, temp, weather }) => {
   const icon = getIcon(weather[0].icon);
 
   return (
-    <div>
+    <div className="daily-element">
       <p>{dayOfWeek}</p>
       <p>
         <img src={icon} alt="icon" />
