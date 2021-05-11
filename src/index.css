@@ -2,7 +2,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
   background-color: rgb(175, 175, 175);
-  color: rebeccapurple;
+  min-height: 100vh;
+  flex-direction: column;
+  margin: 0;
+}
+
+input {
+  padding: 1rem;
+  border-radius: 25px;
+  border: none;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  min-width: 300px;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
 }
