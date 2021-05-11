@@ -8,12 +8,16 @@ const Location = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLocation(locationValue.current.value);
+    locationValue.current.value = "";
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <input name="city" type="text" ref={locationValue} />
+        <button type="submit" className="submit-btn">
+          ⇒
+        </button>
       </form>
       <Weather location={location} />
     </div>

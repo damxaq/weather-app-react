@@ -57,18 +57,30 @@ const Weather = ({ location }) => {
     );
   }
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
-    <div>
+  if (loading) return <div>Loading...</div>;
+
+  console.log(dailyWeather[dayChosen]);
+  const { day, eve, morn, night } = dailyWeather[dayChosen].temp;
+
+  return (
+    <div className="weather-container">
       <div className="current-container">
-        <h1>Weather for {location}:</h1>
+        <h1 className="city">{location}</h1>
         <h2>Temp: {current.temp}°C</h2>
         <img src={current.icon} alt="icon" />
         <h2>{current.description}</h2>
       </div>
 
-      <div>
+      <div className="hourly-container">
+        <ul>
+          <li>{morn}</li>
+          <li>{day}</li>
+          <li>{eve}</li>
+          <li>{night}</li>
+        </ul>
+      </div>
+
+      <div className="daily-container">
         <ul>
           {dailyWeather?.length &&
             dailyWeather.map((weather, index) => {

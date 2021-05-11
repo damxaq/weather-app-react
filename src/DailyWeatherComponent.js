@@ -8,10 +8,9 @@ const DailyWeatherComponent = ({ dt, temp, weather }) => {
     return ICON_URL + icon + "@2x.png";
   };
 
-  console.log(dt, weather);
   const dayOfWeek = days[new Date(dt * 1000).getDay()];
   const icon = getIcon(weather[0].icon);
-  const { day, eve, morn, night } = temp;
+
   return (
     <div>
       <p>{dayOfWeek}</p>

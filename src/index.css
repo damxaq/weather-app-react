@@ -5,12 +5,26 @@ body {
   background-color: rgb(175, 175, 175);
   min-height: 80vh;
   margin: 0;
+  overflow: hidden;
 }
 
 form {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.submit-btn {
+  transform: translateX(-48px);
+  background-color: rgb(5, 47, 146);
+  font-size: 2.2rem;
+  border-radius: 50%;
+  color: white;
+}
+
+.submit-btn:hover {
+  outline: none;
+  border-radius: 50%;
 }
 
 input {
@@ -23,6 +37,16 @@ input {
   font-size: 1rem;
 }
 
+.city {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.weather-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .current-container {
   display: flex;
   align-items: center;
@@ -30,23 +54,35 @@ input {
   flex-direction: column;
 }
 
+.hourly-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  align-self: center;
+  background-color: rgb(93, 93, 93);
+  height: 100px;
+  width: 500px;
+}
+
 input:focus {
   outline: none;
 }
 
+.daily-container {
+  max-width: 1000px;
+}
+
 ul {
-  justify-content: center;
-  align-items: center;
+  justify-content: space-evenly;
   display: flex;
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  flex-direction: row;
 }
 
 li {
-  padding: 1rem;
+  padding: 0.2rem;
+  margin: 0;
 }
 
 li a {
@@ -57,13 +93,27 @@ button:focus {
   outline: none;
 }
 
+button:hover {
+  border: 2px solid grey;
+  border-radius: 20%;
+}
+
 .daily-btn {
-  border: none;
+  padding: 0;
+  margin: 0;
+  border: 2px solid transparent;
   background-color: transparent;
   cursor: pointer;
 }
 
-.active {
+.active,
+.active:hover {
   border: 2px solid;
   border-radius: 20%;
+}
+
+@media screen and (max-width: 900px) {
+  li:nth-last-child(-n + 3) {
+    display: none;
+  }
 }
