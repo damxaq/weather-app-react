@@ -7,7 +7,7 @@ const Location = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchWeather = async (city) => {
-    const url = "http://api.openweathermap.org/data/2.5/weather?q=";
+    const url = "https://api.openweathermap.org/data/2.5/weather?q=";
     const API_KEY = "&appid=59ca3e783384be0ae597d7ff9cef0f84";
     const response = await fetch(`${url}${city}&units=metric${API_KEY}`);
     const data = await response.json();
