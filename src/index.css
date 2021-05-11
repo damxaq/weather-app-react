@@ -3,9 +3,14 @@ body {
   align-items: center;
   justify-content: center;
   background-color: rgb(175, 175, 175);
-  min-height: 100vh;
-  flex-direction: column;
+  min-height: 80vh;
   margin: 0;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 input {
@@ -18,6 +23,47 @@ input {
   font-size: 1rem;
 }
 
+.current-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 input:focus {
   outline: none;
+}
+
+ul {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  flex-direction: row;
+}
+
+li {
+  padding: 1rem;
+}
+
+li a {
+  display: block;
+}
+
+button:focus {
+  outline: none;
+}
+
+.daily-btn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.active {
+  border: 2px solid;
+  border-radius: 20%;
 }

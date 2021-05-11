@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import Weather from "./Weather";
 
 const Location = () => {
-  const locationValue = useRef("Poznan");
-  const [location, setLocation] = useState("Poznan");
+  const locationValue = useRef("");
+  const [location, setLocation] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
