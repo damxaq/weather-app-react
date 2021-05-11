@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DailyWeatherComponent from "./DailyWeatherComponent";
+import HourlyWeatherComponent from "./HourlyWeatherComponent";
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 const LOCATION_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
@@ -57,27 +58,30 @@ const Weather = ({ location }) => {
     );
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="loading">Loading...</div>;
 
   console.log(dailyWeather[dayChosen]);
   const { day, eve, morn, night } = dailyWeather[dayChosen].temp;
+
+  const hourly = [
+    { temp: morn, time: "Mornig" },
+    { temp: day, time: "Day" },
+    { temp: eve, time: "Evening" },
+    { temp: night, time: "Night" },
+  ];
 
   return (
     <div className="weather-container">
       <div className="current-container">
         <h1 className="city">{location}</h1>
-        <h2>Temp: {current.temp}°C</h2>
-        <img src={current.icon} alt="icon" />
+        <h2>Temp: {Math.round(current.temp)}°C</h2>
         <h2>{current.description}</h2>
       </div>
 
       <div className="hourly-container">
-        <ul>
-          <li>{morn}</li>
-          <li>{day}</li>
-          <li>{eve}</li>
-          <li>{night}</li>
-        </ul>
+        {hourly.map((item, index) => {
+          return <HourlyWeatherComponent key={index} {...item} />;
+        })}
       </div>
 
       <div className="daily-container">
@@ -85,7 +89,7 @@ const Weather = ({ location }) => {
           {dailyWeather?.length &&
             dailyWeather.map((weather, index) => {
               return (
-                <li key={index}>
+                <li key={index} className="daily-li">
                   <button
                     className={` ${
                       index === dayChosen ? "daily-btn active" : "daily-btn"
