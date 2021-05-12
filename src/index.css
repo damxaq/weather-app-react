@@ -7,6 +7,7 @@ body {
   margin: 0;
   overflow: hidden;
   max-width: 100%;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .loading {
@@ -42,6 +43,7 @@ input {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   min-width: 250px;
   font-size: 1rem;
+  margin-bottom: 2rem;
 }
 
 .city {
@@ -56,9 +58,63 @@ input {
 
 .current-container {
   display: flex;
+  flex-direction: row;
+  align-self: center;
+  justify-content: space-between;
+  width: 540px;
+}
+
+.left-element {
+  height: 100%;
+  width: 90px;
+  display: flex;
   align-items: center;
-  justify-content: center;
+}
+
+.left-element p {
+  margin: 0;
+  padding: 0;
+}
+
+.left-element .temp {
+  font-size: 40px;
+  font-weight: 100;
+  letter-spacing: -2px;
+}
+
+.left-element:last-child {
   flex-direction: column;
+  font-size: 0.7rem;
+  align-items: flex-start;
+  justify-content: center;
+  width: 120px;
+}
+
+sup {
+  vertical-align: super;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.current-container .current-left {
+  display: flex;
+  flex-direction: row;
+}
+
+.current-container .current-left img {
+  width: 100%;
+}
+
+.current-container .current-right {
+  flex-direction: column;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.current-container .current-right p {
+  margin: 0;
+  padding: 0.1rem 0;
 }
 
 .hourly-container {
@@ -72,6 +128,7 @@ input {
   margin-bottom: 2rem;
   padding: 1rem 3rem;
   margin: 1rem;
+  margin-bottom: 2rem;
 }
 
 .hourly-container div {
@@ -92,7 +149,7 @@ input {
 }
 
 .hourly-p {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 input:focus {
@@ -101,7 +158,6 @@ input:focus {
 
 .daily-container {
   max-width: 90%;
-  align-self: center;
 }
 
 .daily-container ul {
@@ -144,7 +200,7 @@ button:hover {
   border-radius: 20%;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 950px) {
   li.daily-li:nth-last-child(-n + 3) {
     display: none;
   }
@@ -153,7 +209,7 @@ button:hover {
     max-width: 10%;
   }
 
-  img {
+  .daily-element p img {
     transform: scale(0.8);
   }
 
@@ -168,6 +224,10 @@ button:hover {
   .hourly-container div p {
     padding: 0;
   }
+
+  .current-container {
+    width: 450px;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -178,6 +238,10 @@ button:hover {
   .hourly-container {
     width: 250px;
     font-size: 1rem;
+  }
+
+  .current-container {
+    width: 300px;
   }
 
   .hourly-container div {
@@ -192,7 +256,7 @@ button:hover {
     margin: 0;
   }
 
-  img {
+  .daily-element p img {
     transform: scale(0.6);
     padding: 0;
     margin: 0;
@@ -200,5 +264,9 @@ button:hover {
 
   .daily-element p {
     margin: 0;
+  }
+
+  .left-element:last-child {
+    display: none;
   }
 }

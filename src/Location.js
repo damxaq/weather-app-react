@@ -15,9 +15,6 @@ const Location = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <input name="city" type="text" ref={locationValue} />
-        <button type="submit" className="submit-btn" onSubmit={handleSubmit}>
-          ⇨
-        </button>
       </form>
       <Weather location={location} />
     </div>

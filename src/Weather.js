@@ -6,6 +6,15 @@ const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 const LOCATION_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
 const WEATHER_URL = "https://api.openweathermap.org/data/2.5/onecall?";
 const ICON_URL = "https://openweathermap.org/img/wn/";
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thuersday",
+  "Friday",
+  "Saturday",
+];
 
 const Weather = ({ location }) => {
   const [loading, setLoading] = useState(false);
@@ -35,7 +44,12 @@ const Weather = ({ location }) => {
       temp: data.current.temp,
       icon: getIcon(data.current.weather[0].icon),
       description: data.current.weather[0].description,
+      date: days[new Date(data.current.dt * 1000).getDay()],
+      clouds: data.current.clouds,
+      humidity: data.current.humidity,
+      wind: data.current.wind_speed * 3.6,
     };
+    console.log(newWeather);
     setCurrent(newWeather);
     setDailyWeather(data.daily);
     setLoading(false);
@@ -60,7 +74,7 @@ const Weather = ({ location }) => {
 
   if (loading) return <div className="loading">Loading...</div>;
 
-  console.log(dailyWeather[dayChosen]);
+  //console.log(dailyWeather[dayChosen]);
   const { day, eve, morn, night } = dailyWeather[dayChosen].temp;
 
   const hourly = [
@@ -73,9 +87,26 @@ const Weather = ({ location }) => {
   return (
     <div className="weather-container">
       <div className="current-container">
-        <h1 className="city">{location}</h1>
-        <h2>Temp: {Math.round(current.temp)}°C</h2>
-        <h2>{current.description}</h2>
+        <div className="current-left">
+          <div className="left-element">
+            <img src={current.icon} alt="icon" />
+          </div>
+          <div className="left-element">
+            <p className="temp">
+              {Math.round(current.temp)} <sup>°C</sup>
+            </p>
+          </div>
+          <div className="left-element">
+            <p>Clouds: {current.clouds}%</p>
+            <p>Humidity: {current.humidity}%</p>
+            <p>Wind: {Math.round(current.wind)} km/h</p>
+          </div>
+        </div>
+        <div className="current-right">
+          <p className="city">{location}</p>
+          <p>{current.date}</p>
+          <p>{current.description}</p>
+        </div>
       </div>
 
       <div className="hourly-container">
