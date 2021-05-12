@@ -30,8 +30,27 @@ const Weather = ({ location }) => {
   const fetchCoordinates = async (city) => {
     const response = await fetch(`${LOCATION_URL}${city}&appid=${API_KEY}`);
     const { coord } = await response.json();
-    console.log(coord);
     setCoords(coord);
+  };
+
+  const setNewWeather = ({
+    temp,
+    weather,
+    dt,
+    clouds,
+    humidity,
+    wind_speed,
+  }) => {
+    const newWeather = {
+      temp: temp.day ? temp.day : temp,
+      icon: getIcon(weather[0].icon),
+      description: weather[0].description,
+      date: days[new Date(dt * 1000).getDay()],
+      clouds: clouds,
+      humidity: humidity,
+      wind: wind_speed * 3.6,
+    };
+    setCurrent(newWeather);
   };
 
   const fetchWeather = async (coord) => {
@@ -39,18 +58,7 @@ const Weather = ({ location }) => {
       `${WEATHER_URL}lat=${coord.lat}&lon=${coord.lon}&units=metric&exclude=minutely,hourly&appid=${API_KEY}`
     );
     const data = await response.json();
-    console.log(data);
-    const newWeather = {
-      temp: data.current.temp,
-      icon: getIcon(data.current.weather[0].icon),
-      description: data.current.weather[0].description,
-      date: days[new Date(data.current.dt * 1000).getDay()],
-      clouds: data.current.clouds,
-      humidity: data.current.humidity,
-      wind: data.current.wind_speed * 3.6,
-    };
-    console.log(newWeather);
-    setCurrent(newWeather);
+    setNewWeather(data.current);
     setDailyWeather(data.daily);
     setLoading(false);
   };
@@ -64,6 +72,10 @@ const Weather = ({ location }) => {
     if (coords) fetchWeather(coords);
   }, [coords]);
 
+  useEffect(() => {
+    if (dailyWeather[dayChosen]) setNewWeather(dailyWeather[dayChosen]);
+  }, [dayChosen]);
+
   if (!location) {
     return (
       <div>
@@ -74,9 +86,7 @@ const Weather = ({ location }) => {
 
   if (loading) return <div className="loading">Loading...</div>;
 
-  //console.log(dailyWeather[dayChosen]);
   const { day, eve, morn, night } = dailyWeather[dayChosen].temp;
-
   const hourly = [
     { temp: morn, time: "Mornig" },
     { temp: day, time: "Day" },

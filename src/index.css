@@ -115,6 +115,7 @@ sup {
 .current-container .current-right p {
   margin: 0;
   padding: 0.1rem 0;
+  text-align: right;
 }
 
 .hourly-container {
