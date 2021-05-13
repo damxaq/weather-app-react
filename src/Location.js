@@ -12,7 +12,7 @@ const Location = () => {
   };
 
   return (
-    <div>
+    <div className="main">
       <form onSubmit={handleSubmit}>
         <input
           name="city"

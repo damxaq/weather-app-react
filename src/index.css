@@ -1,6 +1,6 @@
 body {
   display: flex;
-  align-items: center;
+  padding-top: 20vh;
   justify-content: center;
   background: rgb(2, 0, 36);
   background: linear-gradient(
@@ -13,6 +13,29 @@ body {
   margin: 0;
   overflow: hidden;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.main {
+}
+
+article {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: all 0.3s linear;
+}
+article.activeSlide {
+  opacity: 1;
+  transform: translateX(0);
+}
+article.lastSlide {
+  transform: translateX(-100%);
+}
+article.nextSlide {
+  transform: translateX(100%);
 }
 
 .loading {
@@ -124,6 +147,14 @@ sup {
   text-align: right;
 }
 
+.timed-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
 .hourly-container {
   justify-content: center;
   align-items: center;
@@ -165,7 +196,12 @@ input:focus {
 }
 
 .daily-container {
-  max-width: 90%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 60vh;
+  left: 10%;
+  right: 10%;
 }
 
 .daily-container ul {
@@ -213,10 +249,6 @@ button:hover {
     display: none;
   }
 
-  .daily-container li {
-    max-width: 10%;
-  }
-
   .daily-element p img {
     transform: scale(0.8);
   }
@@ -243,13 +275,22 @@ button:hover {
     display: none;
   }
 
+  body {
+    padding-top: 10vh;
+  }
+
   .hourly-container {
-    width: 250px;
+    width: 200px;
     font-size: 1rem;
+    margin: 1rem 0;
   }
 
   .current-container {
     width: 300px;
+  }
+
+  .daily-container {
+    top: 55vh;
   }
 
   .hourly-container div {
