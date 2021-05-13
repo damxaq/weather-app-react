@@ -66,7 +66,8 @@ const Weather = ({ location }) => {
   useEffect(() => {
     setLoading(true);
     if (location) fetchCoordinates(location);
-  }, [location]);
+    setDayChosen(0);
+  }, [location, setDayChosen]);
 
   useEffect(() => {
     if (coords) fetchWeather(coords);

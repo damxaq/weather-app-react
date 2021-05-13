@@ -14,7 +14,12 @@ const Location = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input name="city" type="text" ref={locationValue} />
+        <input
+          name="city"
+          type="text"
+          ref={locationValue}
+          placeholder="Location"
+        />
       </form>
       <Weather location={location} />
     </div>

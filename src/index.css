@@ -2,11 +2,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(175, 175, 175);
-  min-height: 80vh;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  min-height: 100vh;
   margin: 0;
   overflow: hidden;
-  max-width: 100%;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -62,6 +67,7 @@ input {
   align-self: center;
   justify-content: space-between;
   width: 540px;
+  color: white;
 }
 
 .left-element {
@@ -150,6 +156,7 @@ sup {
 }
 
 .hourly-p {
+  color: blue;
   font-size: 1.5rem;
 }
 
