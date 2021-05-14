@@ -241,6 +241,10 @@ button:hover {
   border-radius: 20%;
 }
 
+.weather-hidden {
+  display: none;
+}
+
 @media screen and (max-width: 950px) {
   li.daily-li:nth-last-child(-n + 3) {
     display: none;

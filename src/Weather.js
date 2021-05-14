@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DailyWeatherComponent from "./DailyWeatherComponent";
 import HourlyWeatherComponent from "./HourlyWeatherComponent";
+import CurrentWeatherComponent from "./CurrentWeatherComponent";
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 const LOCATION_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
@@ -16,8 +17,7 @@ const days = [
   "Saturday",
 ];
 
-const Weather = ({ location }) => {
-  const [loading, setLoading] = useState(false);
+const Weather = ({ location, setLoading }) => {
   const [coords, setCoords] = useState(undefined);
   const [current, setCurrent] = useState({});
   const [dailyWeather, setDailyWeather] = useState([]);
@@ -25,6 +25,20 @@ const Weather = ({ location }) => {
 
   const getIcon = (icon) => {
     return ICON_URL + icon + "@2x.png";
+  };
+
+  const getPosition = (dailyIndex) => {
+    let position = "nextSlide";
+    if (dailyIndex === dayChosen) {
+      position = "activeSlide";
+    }
+    if (
+      dailyIndex === dayChosen - 1 ||
+      (dayChosen === 0 && dailyIndex === dailyWeather.length - 1)
+    ) {
+      position = "lastSlide";
+    }
+    return position;
   };
 
   const fetchCoordinates = async (city) => {
@@ -77,93 +91,52 @@ const Weather = ({ location }) => {
     if (dailyWeather[dayChosen]) setNewWeather(dailyWeather[dayChosen]);
   }, [dayChosen]);
 
-  if (!location) {
-    return (
-      <div>
-        <h2>Please enter the location</h2>
-      </div>
-    );
-  }
-
-  if (loading) return <div className="loading">Loading...</div>;
-
   return (
     <div className="weather-container">
-      <div className="current-container">
-        <div className="current-left">
-          <div className="left-element">
-            <img src={current.icon} alt="icon" />
-          </div>
-          <div className="left-element">
-            <p className="temp">
-              {Math.round(current.temp)} <sup>°C</sup>
-            </p>
-          </div>
-          <div className="left-element">
-            <p>Clouds: {current.clouds}%</p>
-            <p>Humidity: {current.humidity}%</p>
-            <p>Wind: {Math.round(current.wind)} km/h</p>
-          </div>
-        </div>
-        <div className="current-right">
-          <p className="city">{location}</p>
-          <p>{current.date}</p>
-          <p>{current.description}</p>
-        </div>
+      <CurrentWeatherComponent {...current} location={location} />
+
+      <div className="timed-container">
+        {dailyWeather.map((daily, dailyIndex) => {
+          const { day, eve, morn, night } = daily.temp;
+          const hourly = [
+            { temp: morn, time: "Mornig" },
+            { temp: day, time: "Day" },
+            { temp: eve, time: "Evening" },
+            { temp: night, time: "Night" },
+          ];
+
+          const position = getPosition(dailyIndex);
+
+          return (
+            <article className={position} key={dailyIndex}>
+              <div className="hourly-container">
+                {hourly.map((item, index) => {
+                  return <HourlyWeatherComponent key={index} {...item} />;
+                })}
+              </div>
+            </article>
+          );
+        })}
       </div>
 
-      <div>
-        <div className="timed-container">
-          {dailyWeather.map((daily, dailyIndex) => {
-            const { day, eve, morn, night } = daily.temp;
-            const hourly = [
-              { temp: morn, time: "Mornig" },
-              { temp: day, time: "Day" },
-              { temp: eve, time: "Evening" },
-              { temp: night, time: "Night" },
-            ];
-
-            let position = "nextSlide";
-            if (dailyIndex === dayChosen) {
-              position = "activeSlide";
-            }
-            if (
-              dailyIndex === dayChosen - 1 ||
-              (dayChosen === 0 && dailyIndex === dailyWeather.length - 1)
-            ) {
-              position = "lastSlide";
-            }
-            return (
-              <article className={position}>
-                <div className="hourly-container">
-                  {hourly.map((item, index) => {
-                    return <HourlyWeatherComponent key={index} {...item} />;
-                  })}
-                </div>
-              </article>
-            );
-          })}
-        </div>
-
-        <div className="daily-container">
-          <ul className="daily-ul">
-            {dailyWeather?.length &&
-              dailyWeather.map((weather, index) => {
-                return (
-                  <li key={index} className="daily-li">
-                    <button
-                      className={` ${
-                        index === dayChosen ? "daily-btn active" : "daily-btn"
-                      } `}
-                      onClick={() => setDayChosen(index)}
-                    >
-                      <DailyWeatherComponent {...weather} />
-                    </button>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
+      <div className="daily-container">
+        <ul className="daily-ul">
+          {dailyWeather?.length &&
+            dailyWeather.map((weather, index) => {
+              return (
+                <li key={index} className="daily-li">
+                  <button
+                    className={` ${
+                      index === dayChosen ? "daily-btn active" : "daily-btn"
+                    } `}
+                    onClick={() => setDayChosen(index)}
+                  >
+                    <DailyWeatherComponent {...weather} />
+                  </button>
+                </li>
+              );
+            })}
+        </ul>
       </div>
     </div>
   );

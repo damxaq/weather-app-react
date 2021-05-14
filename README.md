@@ -1,1 +1,1 @@
-generic react weather app
+responsive react weather app
