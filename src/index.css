@@ -15,9 +15,6 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.main {
-}
-
 article {
   position: absolute;
   top: 0;
@@ -316,6 +313,12 @@ button:hover {
   }
 
   .left-element:last-child {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 550px) {
+  .daily-container {
     display: none;
   }
 }
