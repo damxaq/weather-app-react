@@ -91,6 +91,14 @@ const Weather = ({ location, setLoading }) => {
     if (dailyWeather[dayChosen]) setNewWeather(dailyWeather[dayChosen]);
   }, [dayChosen]);
 
+  useEffect(() => {
+    // Refreshing data every 5 minutes
+    let refresher = setInterval(() => {
+      if (coords) fetchWeather(coords);
+    }, 1000 * 60 * 5);
+    return () => clearInterval(refresher);
+  }, [coords]);
+
   return (
     <div className="weather-container">
       <CurrentWeatherComponent {...current} location={location} />
