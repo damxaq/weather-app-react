@@ -1,5 +1,6 @@
 // add dogs
 // add automatic localization
+// add try catches
 
 import React, { useState, useRef, useEffect } from "react";
 import Weather from "./Weather";

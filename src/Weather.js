@@ -19,8 +19,7 @@ const days = [
 
 const Weather = ({ location, setLoading }) => {
   const [coords, setCoords] = useState(undefined);
-  const [current, setCurrent] = useState({});
-  const [dailyWeather, setDailyWeather] = useState([]);
+  const [weatherData, setWeatherData] = useState({});
   const [dayChosen, setDayChosen] = useState(0);
 
   const getIcon = (icon) => {
@@ -34,7 +33,7 @@ const Weather = ({ location, setLoading }) => {
     }
     if (
       dailyIndex === dayChosen - 1 ||
-      (dayChosen === 0 && dailyIndex === dailyWeather.length - 1)
+      (dayChosen === 0 && dailyIndex === weatherData.dailyWeather.length - 1)
     ) {
       position = "lastSlide";
     }
@@ -47,24 +46,17 @@ const Weather = ({ location, setLoading }) => {
     setCoords(coord);
   };
 
-  const setNewWeather = ({
-    temp,
-    weather,
-    dt,
-    clouds,
-    humidity,
-    wind_speed,
-  }) => {
-    const newWeather = {
-      temp: temp.day ? temp.day : temp,
-      icon: getIcon(weather[0].icon),
-      description: weather[0].description,
-      date: days[new Date(dt * 1000).getDay()],
-      clouds: clouds,
-      humidity: humidity,
-      wind: wind_speed * 3.6,
+  const setNewWeather = ({ current, daily }) => {
+    const currentWeather = {
+      temp: current.temp.day ? current.temp.day : current.temp,
+      icon: getIcon(current.weather[0].icon),
+      description: current.weather[0].description,
+      date: days[new Date(current.dt * 1000).getDay()],
+      clouds: current.clouds,
+      humidity: current.humidity,
+      wind: current.wind_speed * 3.6,
     };
-    setCurrent(newWeather);
+    setWeatherData({ currentWeather: currentWeather, dailyWeather: daily });
   };
 
   const fetchWeather = async (coord) => {
@@ -72,8 +64,7 @@ const Weather = ({ location, setLoading }) => {
       `${WEATHER_URL}lat=${coord.lat}&lon=${coord.lon}&units=metric&exclude=minutely,hourly&appid=${API_KEY}`
     );
     const data = await response.json();
-    setNewWeather(data.current);
-    setDailyWeather(data.daily);
+    setNewWeather(data);
     setLoading(false);
   };
 
@@ -88,49 +79,59 @@ const Weather = ({ location, setLoading }) => {
   }, [coords]);
 
   useEffect(() => {
-    if (dailyWeather[dayChosen]) setNewWeather(dailyWeather[dayChosen]);
+    if (weatherData.dailyWeather) {
+      setNewWeather({
+        current: weatherData.dailyWeather[dayChosen],
+        daily: weatherData.dailyWeather,
+      });
+    }
   }, [dayChosen]);
 
-  useEffect(() => {
-    // Refreshing data every 5 minutes
-    let refresher = setInterval(() => {
-      if (coords) fetchWeather(coords);
-    }, 1000 * 60 * 5);
-    return () => clearInterval(refresher);
-  }, [coords]);
+  //   useEffect(() => {
+  //     // Refreshing data every 5 minutes
+  //     let refresher = setInterval(() => {
+  //       if (coords) fetchWeather(coords);
+  //     }, 1000 * 60 * 5);
+  //     return () => clearInterval(refresher);
+  //   }, [coords]);
 
   return (
     <div className="weather-container">
-      <CurrentWeatherComponent {...current} location={location} />
+      <CurrentWeatherComponent
+        {...weatherData.currentWeather}
+        location={location}
+      />
 
       <div className="timed-container">
-        {dailyWeather.map((daily, dailyIndex) => {
-          const { day, eve, morn, night } = daily.temp;
-          const hourly = [
-            { temp: morn, time: "Mornig" },
-            { temp: day, time: "Day" },
-            { temp: eve, time: "Evening" },
-            { temp: night, time: "Night" },
-          ];
+        {weatherData.dailyWeather &&
+          weatherData.dailyWeather.map((daily, dailyIndex) => {
+            const { day, eve, morn, night } = daily.temp;
+            const hourly = [
+              { temp: morn, time: "Mornig" },
+              { temp: day, time: "Day" },
+              { temp: eve, time: "Evening" },
+              { temp: night, time: "Night" },
+            ];
 
-          const position = getPosition(dailyIndex);
+            const position = getPosition(dailyIndex);
 
-          return (
-            <article className={position} key={dailyIndex}>
-              <div className="hourly-container">
-                {hourly.map((item, index) => {
-                  return <HourlyWeatherComponent key={index} {...item} />;
-                })}
-              </div>
-            </article>
-          );
-        })}
+            return (
+              <article className={position} key={dailyIndex}>
+                <div className="hourly-container">
+                  {hourly.map((item, index) => {
+                    return <HourlyWeatherComponent key={index} {...item} />;
+                  })}
+                </div>
+              </article>
+            );
+          })}
       </div>
 
       <div className="daily-container">
         <ul className="daily-ul">
-          {dailyWeather?.length &&
-            dailyWeather.map((weather, index) => {
+          {weatherData &&
+            weatherData.dailyWeather?.length &&
+            weatherData.dailyWeather.map((weather, index) => {
               return (
                 <li key={index} className="daily-li">
                   <button
