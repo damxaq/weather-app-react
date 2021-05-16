@@ -1,6 +1,7 @@
 // add dogs
 // add automatic localization
 // add try catches
+// fix bug with weird temp after change location
 
 import React, { useState, useRef, useEffect } from "react";
 import Weather from "./Weather";
