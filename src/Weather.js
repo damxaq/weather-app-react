@@ -4,7 +4,6 @@ import HourlyWeatherComponent from "./HourlyWeatherComponent";
 import CurrentWeatherComponent from "./CurrentWeatherComponent";
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-const LOCATION_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
 const WEATHER_URL = "https://api.openweathermap.org/data/2.5/onecall?";
 const ICON_URL = "https://openweathermap.org/img/wn/";
 const days = [
@@ -17,8 +16,7 @@ const days = [
   "Saturday",
 ];
 
-const Weather = ({ location, setLoading }) => {
-  const [coords, setCoords] = useState(undefined);
+const Weather = ({ location, setLoading, coords }) => {
   const [weatherData, setWeatherData] = useState({});
   const [dayChosen, setDayChosen] = useState(0);
 
@@ -38,12 +36,6 @@ const Weather = ({ location, setLoading }) => {
       position = "lastSlide";
     }
     return position;
-  };
-
-  const fetchCoordinates = async (city) => {
-    const response = await fetch(`${LOCATION_URL}${city}&appid=${API_KEY}`);
-    const { coord } = await response.json();
-    setCoords(coord);
   };
 
   const setNewWeather = ({ current, daily }) => {
@@ -69,14 +61,9 @@ const Weather = ({ location, setLoading }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    if (location) fetchCoordinates(location);
+    fetchWeather(coords);
     setDayChosen(0);
-  }, [location, setDayChosen]);
-
-  useEffect(() => {
-    if (coords) fetchWeather(coords);
-  }, [coords]);
+  }, [coords, setDayChosen]);
 
   useEffect(() => {
     if (weatherData.dailyWeather) {

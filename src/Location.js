@@ -1,21 +1,38 @@
 // add dogs
 // add automatic localization
 // add try catches
-// fix bug with weird temp after change location
 
 import React, { useState, useRef, useEffect } from "react";
 import Weather from "./Weather";
+
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+const LOCATION_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
 
 const Location = () => {
   const locationValue = useRef("");
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
+  const [coords, setCoords] = useState(undefined);
+
+  const fetchCoordinates = async (city) => {
+    const response = await fetch(`${LOCATION_URL}${city}&appid=${API_KEY}`);
+    const { coord } = await response.json();
+    setCoords(coord);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLocation(locationValue.current.value);
+    const newLocation = locationValue.current.value;
+    if (newLocation && newLocation !== location) {
+      setLoading(true);
+      setLocation(locationValue.current.value);
+    }
     locationValue.current.value = "";
   };
+
+  useEffect(() => {
+    if (location) fetchCoordinates(location);
+  }, [location]);
 
   // useEffect(() => {
   //   if ("geolocation" in navigator) {
@@ -42,13 +59,20 @@ const Location = () => {
       </form>
 
       {loading && <div className="loading">Loading...</div>}
-      {!location ? (
+      {/* tweak it */}
+      {!(location && coords) ? (
         <div>
           <h2>Please enter the location</h2>
         </div>
       ) : (
         <div className={loading ? "weather-hidden" : ""}>
-          <Weather location={location} setLoading={setLoading} />
+          {coords && (
+            <Weather
+              location={location}
+              setLoading={setLoading}
+              coords={coords}
+            />
+          )}
         </div>
       )}
     </div>
