@@ -1,7 +1,3 @@
-// add dogs
-// add automatic localization
-// add try catches
-
 import React, { useState, useRef, useEffect } from "react";
 import Weather from "./Weather";
 
@@ -13,6 +9,7 @@ const Location = () => {
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
   const [coords, setCoords] = useState(undefined);
+  const [isAutomatic, setIsAutomatic] = useState(false);
 
   const fetchCoordinates = async (city) => {
     const response = await fetch(`${LOCATION_URL}${city}&appid=${API_KEY}`);
@@ -24,6 +21,7 @@ const Location = () => {
     e.preventDefault();
     const newLocation = locationValue.current.value;
     if (newLocation && newLocation !== location) {
+      setIsAutomatic(false);
       setLoading(true);
       setLocation(locationValue.current.value);
     }
@@ -31,21 +29,21 @@ const Location = () => {
   };
 
   useEffect(() => {
-    if (location) fetchCoordinates(location);
-  }, [location]);
+    if (location && !isAutomatic) fetchCoordinates(location);
+  }, [location, isAutomatic]);
 
-  // useEffect(() => {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(function (position) {
-  //       console.log("Latitude is :", position.coords.latitude);
-  //       console.log("Longitude is :", position.coords.longitude);
-  //       setCoords({
-  //         lat: position.coords.latitude,
-  //         lon: position.coords.longitude,
-  //       });
-  //     });
-  //   }
-  // }, [coords]);
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setCoords({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+        setIsAutomatic(true);
+        setLocation("Your location");
+      });
+    }
+  }, []);
 
   return (
     <div className="main">
@@ -59,14 +57,13 @@ const Location = () => {
       </form>
 
       {loading && <div className="loading">Loading...</div>}
-      {/* tweak it */}
-      {!(location && coords) ? (
+      {!(location || coords) ? (
         <div>
           <h2>Please enter the location</h2>
         </div>
       ) : (
         <div className={loading ? "weather-hidden" : ""}>
-          {coords && (
+          {coords && location && (
             <Weather
               location={location}
               setLoading={setLoading}

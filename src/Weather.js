@@ -57,12 +57,12 @@ const Weather = ({ location, setLoading, coords }) => {
     );
     const data = await response.json();
     setNewWeather(data);
+    setDayChosen(0);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchWeather(coords);
-    setDayChosen(0);
   }, [coords, setDayChosen]);
 
   useEffect(() => {
@@ -74,13 +74,13 @@ const Weather = ({ location, setLoading, coords }) => {
     }
   }, [dayChosen]);
 
-  //   useEffect(() => {
-  //     // Refreshing data every 5 minutes
-  //     let refresher = setInterval(() => {
-  //       if (coords) fetchWeather(coords);
-  //     }, 1000 * 60 * 5);
-  //     return () => clearInterval(refresher);
-  //   }, [coords]);
+  useEffect(() => {
+    // Refreshing data every 10 minutes
+    let refresher = setInterval(() => {
+      if (coords) fetchWeather(coords);
+    }, 1000 * 60 * 10);
+    return () => clearInterval(refresher);
+  }, [coords]);
 
   return (
     <div className="weather-container">
