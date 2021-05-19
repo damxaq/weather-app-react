@@ -81,15 +81,6 @@ input {
   flex-direction: column;
 }
 
-.current-container {
-  display: flex;
-  flex-direction: row;
-  align-self: center;
-  justify-content: space-between;
-  width: 540px;
-  color: white;
-}
-
 .left-element {
   height: 100%;
   width: 90px;
@@ -120,6 +111,15 @@ sup {
   vertical-align: super;
   font-size: 1.2rem;
   margin: 0;
+}
+
+.current-container {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  justify-content: space-between;
+  width: 540px;
+  color: white;
 }
 
 .current-container .current-left {
@@ -286,14 +286,6 @@ button:hover {
     margin: 1rem 0;
   }
 
-  .current-container {
-    width: 300px;
-  }
-
-  .daily-container {
-    top: 55vh;
-  }
-
   .hourly-container div {
     font-size: 1rem;
     border-left: none !important;
@@ -304,6 +296,14 @@ button:hover {
     font-size: 1rem;
     padding: 0;
     margin: 0;
+  }
+
+  .current-container {
+    width: 300px;
+  }
+
+  .daily-container {
+    top: 55vh;
   }
 
   .daily-element p img {
