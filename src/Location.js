@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Weather from "./Weather";
+import Loader from "react-loader-spinner";
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 const LOCATION_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
@@ -24,7 +25,7 @@ const Location = () => {
         setLoading(false);
         setIsWrongLocation(true);
       });
-    console.log("response", response);
+
     if (response) {
       const { coord } = await response.json();
       setIsWrongLocation(false);
@@ -71,7 +72,11 @@ const Location = () => {
         />
       </form>
 
-      {loading && <div className="loading">Loading...</div>}
+      {loading && (
+        <div className="loading">
+          <Loader type="ThreeDots" color="#00BFFF" height={150} width={150} />
+        </div>
+      )}
       {isWrongLocation && (
         <div>
           <h2>Location not found, try again</h2>
