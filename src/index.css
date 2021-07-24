@@ -15,6 +15,11 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+h2 {
+  color: white;
+  text-align: center;
+}
+
 article {
   position: absolute;
   top: 0;

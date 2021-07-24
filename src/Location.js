@@ -10,11 +10,26 @@ const Location = () => {
   const [loading, setLoading] = useState(false);
   const [coords, setCoords] = useState(undefined);
   const [isAutomatic, setIsAutomatic] = useState(false);
+  const [isWrongLocation, setIsWrongLocation] = useState(false);
 
   const fetchCoordinates = async (city) => {
-    const response = await fetch(`${LOCATION_URL}${city}&appid=${API_KEY}`);
-    const { coord } = await response.json();
-    setCoords(coord);
+    const response = await fetch(`${LOCATION_URL}${city}&appid=${API_KEY}`)
+      .then((data) => {
+        if (data.status >= 400) throw new Error("Location not found");
+        return data;
+      })
+      .catch((e) => {
+        console.log(e);
+        setCoords(undefined);
+        setLoading(false);
+        setIsWrongLocation(true);
+      });
+    console.log("response", response);
+    if (response) {
+      const { coord } = await response.json();
+      setIsWrongLocation(false);
+      setCoords(coord);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -57,6 +72,11 @@ const Location = () => {
       </form>
 
       {loading && <div className="loading">Loading...</div>}
+      {isWrongLocation && (
+        <div>
+          <h2>Location not found, try again</h2>
+        </div>
+      )}
       {!(location || coords) ? (
         <div>
           <h2>Please enter the location</h2>
